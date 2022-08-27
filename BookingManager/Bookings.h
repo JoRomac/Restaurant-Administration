@@ -23,4 +23,5 @@ protected:
 public:
 	CListCtrl bookingList;
 	
+	afx_msg void OnAddReservationClicked();
 };

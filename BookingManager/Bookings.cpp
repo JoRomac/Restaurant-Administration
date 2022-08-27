@@ -5,7 +5,7 @@
 #include "BookingManager.h"
 #include "Bookings.h"
 #include "afxdialogex.h"
-
+#include "NewReservation.h"
 
 // Bookings dialog
 
@@ -24,12 +24,12 @@ Bookings::~Bookings()
 void Bookings::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	//  DDX_Control(pDX, IDC_LIST1, bookingList);
 	DDX_Control(pDX, IDC_LIST1, bookingList);
 }
 
 
 BEGIN_MESSAGE_MAP(Bookings, CDialogEx)
+	ON_BN_CLICKED(IDC_ADD_RESERVATION, &Bookings::OnAddReservationClicked)
 END_MESSAGE_MAP()
 
 
@@ -70,4 +70,11 @@ BOOL Bookings::OnInitDialog()
 	bookingList.SetExtendedStyle(bookingList.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+
+void Bookings::OnAddReservationClicked()
+{
+	NewReservation reservation;
+	reservation.DoModal();
 }
