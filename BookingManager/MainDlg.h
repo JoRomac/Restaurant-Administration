@@ -11,6 +11,7 @@ public:
 	MainDlg(const CString name, CWnd* pParent = nullptr);   // standard constructor
 	virtual ~MainDlg();
 
+
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_MAIN_DLG };
@@ -20,4 +21,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
+public:
+	virtual BOOL OnInitDialog();
+	afx_msg void OnBookingClicked();
 };

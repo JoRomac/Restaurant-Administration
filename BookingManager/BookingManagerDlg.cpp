@@ -110,7 +110,7 @@ void CBookingManagerDlg::OnLoginClicked()
 		App.DoModal();
 	}
 	else {
-		s.LoadString(AFX_IDS_USER_EXCEPTION);
+		s.LoadString(IDS_USER_UNKNOWN);
 		AfxMessageBox(s);
 	}
 	userLogin.Close();

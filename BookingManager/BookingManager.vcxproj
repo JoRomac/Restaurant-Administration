@@ -185,6 +185,7 @@
   <ItemGroup>
     <ClInclude Include="BookingManager.h" />
     <ClInclude Include="BookingManagerDlg.h" />
+    <ClInclude Include="Bookings.h" />
     <ClInclude Include="CUser.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainDlg.h" />
@@ -195,6 +196,7 @@
   <ItemGroup>
     <ClCompile Include="BookingManager.cpp" />
     <ClCompile Include="BookingManagerDlg.cpp" />
+    <ClCompile Include="Bookings.cpp" />
     <ClCompile Include="CUser.cpp" />
     <ClCompile Include="MainDlg.cpp" />
     <ClCompile Include="pch.cpp">
