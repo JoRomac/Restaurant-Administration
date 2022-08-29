@@ -26,4 +26,9 @@ public:
 	afx_msg void OnAddReservationClicked();
 
 	afx_msg void OnDisplayAllClicked();
+//	COleDateTime m_displayByMonth;
+//	afx_msg void OnMcnSelchangeDisplayByMonth(NMHDR* pNMHDR, LRESULT* pResult);
+//	CMonthCalCtrl m_getResrvationsByDate;
+	CDateTimeCtrl m_GetReservationsByDate;
+	afx_msg void OnDtnDatetimechangeDatetimepicker1(NMHDR* pNMHDR, LRESULT* pResult);
 };

@@ -70,7 +70,6 @@ void NewReservation::OnAddCliked()
 	guest.m_Date = d;
 	guest.m_Occasion = m_Occasion;
 	guest.m_Contact = m_Contact;
-	//guest.m_Tn = m_TableNum;
 	if (!guest.Update()) {
 		AfxMessageBox(_T("Unsuccessful attempt"));
 	}

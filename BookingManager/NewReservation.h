@@ -28,6 +28,7 @@ public:
 	CDateTimeCtrl m_Date;
 	CString m_Occasion;
 	CString m_Contact;
+
 	CString bookTime, bookDate;
 	afx_msg void OnAddCliked();
 	CTime t, d;
