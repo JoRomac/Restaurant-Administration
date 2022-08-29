@@ -20,4 +20,16 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
+public:
+	CString m_Name;
+	CString m_LastName;
+	CString m_Pax;
+	CDateTimeCtrl m_Time;
+	CDateTimeCtrl m_Date;
+	CString m_Occasion;
+	CString m_Contact;
+	CString bookTime, bookDate;
+	afx_msg void OnAddCliked();
+	CTime t, d;
+
 };

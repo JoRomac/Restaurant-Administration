@@ -24,4 +24,6 @@ public:
 	CListCtrl bookingList;
 	
 	afx_msg void OnAddReservationClicked();
+
+	afx_msg void OnDisplayAllClicked();
 };
