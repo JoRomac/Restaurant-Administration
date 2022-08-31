@@ -24,4 +24,5 @@ protected:
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBookingClicked();
+	afx_msg void OnUsersClicked();
 };

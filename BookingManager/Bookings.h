@@ -22,7 +22,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CListCtrl bookingList;
-	
+	virtual void OnPrint(CDC* pDC);//
 	afx_msg void OnAddReservationClicked();
 
 	afx_msg void OnDisplayAllClicked();
@@ -31,4 +31,8 @@ public:
 //	CMonthCalCtrl m_getResrvationsByDate;
 	CDateTimeCtrl m_GetReservationsByDate;
 	afx_msg void OnDtnDatetimechangeDatetimepicker1(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnBnClickedPrint();
+	void Print();
+	afx_msg void OnLvnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnBnClickedRemoveReservation();
 };

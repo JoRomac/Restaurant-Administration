@@ -7,6 +7,7 @@
 #include "afxdialogex.h"
 #include "NewReservation.h"
 #include "Guest.h"
+#include "afxwin.h"
 // Bookings dialog
 
 IMPLEMENT_DYNAMIC(Bookings, CDialogEx)
@@ -35,6 +36,9 @@ BEGIN_MESSAGE_MAP(Bookings, CDialogEx)
 	ON_BN_CLICKED(IDC_ADD_RESERVATION, &Bookings::OnAddReservationClicked)
 	ON_BN_CLICKED(IDC_DISPLAY_ALL, &Bookings::OnDisplayAllClicked)
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATETIMEPICKER1, &Bookings::OnDtnDatetimechangeDatetimepicker1)
+	ON_BN_CLICKED(IDC_PRINT, &Bookings::OnBnClickedPrint)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST1, &Bookings::OnLvnItemchangedList1)
+	ON_BN_CLICKED(IDC_REMOVE_RESERVATION, &Bookings::OnBnClickedRemoveReservation)
 END_MESSAGE_MAP()
 
 
@@ -56,7 +60,7 @@ BOOL Bookings::OnInitDialog()
 	bookingList.InsertColumn(5, _T("Date"), LVCFMT_LEFT, 100);
 	bookingList.InsertColumn(6, _T("Occasion"), LVCFMT_LEFT, 120);
 	bookingList.InsertColumn(7, _T("Contact"), LVCFMT_LEFT, 120);
-	bookingList.SetExtendedStyle(bookingList.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | );
+	bookingList.SetExtendedStyle(bookingList.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -125,4 +129,193 @@ void Bookings::OnDtnDatetimechangeDatetimepicker1(NMHDR* pNMHDR, LRESULT* pResul
 	}
 	guest.Close();
 	*pResult = 0;
+}
+
+void Bookings::OnPrint(CDC* pDC)//
+{
+
+	int const a4size = 21;
+	int paper_width = pDC->GetDeviceCaps(HORZRES);
+	int paper_heigth = pDC->GetDeviceCaps(VERTRES);
+	float start_point = paper_width / a4size;
+
+	CSize cs = pDC->GetTextExtent(_T("A"));
+	int row = 0;
+	pDC->TextOut(start_point * 1, row, _T("Name"));
+	pDC->TextOut(start_point * 5, row, _T("Surname"));
+	pDC->TextOut(start_point * 9, row, _T("Pax"));
+	pDC->TextOut(start_point * 13, row, _T("Time"));
+	pDC->TextOut(start_point * 17, row, _T("Occasion"));
+	
+
+	row += cs.cy;
+	pDC->MoveTo(start_point, row);
+	pDC->LineTo(paper_width/1.1, row);
+
+	for (int r = 0; r <= bookingList.GetItemCount(); ++r) {
+		row += cs.cy;
+		pDC->TextOut(start_point * 1, row, bookingList.GetItemText(r,1));
+		pDC->TextOut(start_point * 5, row, bookingList.GetItemText(r,2));
+		pDC->TextOut(start_point * 9, row, bookingList.GetItemText(r,3));
+		pDC->TextOut(start_point * 13, row, bookingList.GetItemText(r,4));
+		pDC->TextOut(start_point * 17, row, bookingList.GetItemText(r,6));
+	}
+}
+
+void Bookings::OnBnClickedPrint()
+{
+	Print();
+}
+void Bookings::Print()
+{
+// get the default printer
+   CPrintDialog dlg(FALSE);
+   dlg.GetDefaults();
+
+   // is a default printer set up?
+   HDC hdcPrinter = dlg.GetPrinterDC();
+   if (hdcPrinter == NULL)
+   {
+      MessageBox(_T("Buy a printer!"));
+   }
+   else
+   {
+      // create a CDC and attach it to the default printer
+      CDC dcPrinter;
+      dcPrinter.Attach(hdcPrinter);
+
+      // call StartDoc() to begin printing
+      DOCINFO docinfo;
+      memset(&docinfo, 0, sizeof(docinfo));
+      docinfo.cbSize = sizeof(docinfo);
+      docinfo.lpszDocName = _T("CDC::StartDoc() Code Fragment");
+
+	  
+	  //CPrintInfo Info;
+	  //Info.m_rectDraw.SetRect(0, 0, dcPrinter.GetDeviceCaps(HORZRES), dcPrinter.GetDeviceCaps(VERTRES));
+
+      if (dcPrinter.StartDoc(&docinfo) < 0)
+      {
+         MessageBox(_T("Printer wouldn't initialize"));
+      }
+      else
+      {
+         // start a page
+         if (dcPrinter.StartPage() < 0)
+         {
+            MessageBox(_T("Could not start page"));
+            dcPrinter.AbortDoc();
+         }
+         else
+         {
+            // actually do some printing
+			 dcPrinter.SetMapMode(MM_TEXT);
+			 /*CFont* pOldFont;
+			 CFont fnt;
+			 fnt.CreatePointFont(100, _T("HM"), &dcPrinter);*/
+			 CFont font;
+			 LOGFONT lf;
+			 memset(&lf, 0, sizeof(LOGFONT)); // zero out structure
+			 lf.lfHeight = 12;                // request a 12-pixel-height font
+			 _tcsncpy_s(lf.lfFaceName, LF_FACESIZE,
+				 _T("Arial"), 7);           // request a face name "Arial"
+			 VERIFY(font.CreateFontIndirect(&lf)); // create the font
+
+			 // Do something with the font just created...
+			 
+			 CFont* def_font = dcPrinter.SelectObject(&font);
+			 dcPrinter.TextOut(5, 5, _T("Hello"), 5);
+			 dcPrinter.SelectObject(def_font);
+			 //if (fnt.CreatePointFont(120, _T("HM"), &dcPrinter)) {
+				// pOldFont = (CFont*)dcPrinter.SelectObject(&fnt);
+			 //}
+			 //else {
+				// pOldFont = (CFont*)dcPrinter.SelectStockObject(DEVICE_DEFAULT_FONT);
+			 //}
+            //CGdiObject *pOldFont = dcPrinter.SelectStockObject(SYSTEM_FONT);
+			//pOldFont = (CFont*)dcPrinter.SelectObject(&fnt);
+			//CPoint pt(dcPrinter.GetDeviceCaps(HORZRES), dcPrinter.GetDeviceCaps(VERTRES));
+			//dcPrinter.DPtoLP(&pt);
+			//CSize const cs = dcPrinter.GetTextExtent(_T("A"));
+			//int row = 0;
+			//row += cs.cy;
+			//row += cs.cy;
+			//row += cs.cy;
+			//dcPrinter.TextOut(50, 50, _T("Hello World!"), 12);
+			OnPrint(&dcPrinter);
+            dcPrinter.EndPage();
+            dcPrinter.EndDoc();
+            dcPrinter.SelectObject(def_font);
+         }
+      }
+   }
+}
+
+//void Bookings::Print()
+//{
+//	AFX_MANAGE_STATE(AfxGetStaticModuleState()); 
+//
+//	CDC dc;
+//	CPrintDialog* pPrntDialog(FALSE);
+//	if (pPrntDialog == NULL)
+//	{
+//		CPrintDialog printDlg(FALSE);
+//		if (printDlg.DoModal() != IDOK)         // Get printer settings from user
+//			return;
+//
+//		dc.Attach(printDlg.GetPrinterDC());     // attach a printer DC
+//	}
+//	else
+//		dc.Attach(pPrntDialog->GetPrinterDC()); // attach a printer DC
+//	dc.m_bPrinting = TRUE;
+//	//CString strTitle;
+//	DOCINFO di;                                 // Initialise print doc details
+//	memset(&di, 0, sizeof(DOCINFO));
+//	di.cbSize = sizeof(DOCINFO);
+//	//di.lpszDocName = strTitle.c_str();
+//
+//	BOOL bPrintingOK = dc.StartDoc(&di);        // Begin a new print job
+//
+//	CPrintInfo Info;
+//	Info.m_rectDraw.SetRect(0, 0, dc.GetDeviceCaps(HORZRES), dc.GetDeviceCaps(VERTRES));
+//
+//	OnBeginPrinting(&dc, &Info);                // Initialise printing
+//	for (UINT page = Info.GetMinPage(); page <= Info.GetMaxPage() && bPrintingOK; page++)
+//	{
+//		dc.StartPage();                         // begin new page
+//		Info.m_nCurPage = page;
+//		OnPrint(&dc, &Info);                    // Print page
+//		bPrintingOK = (dc.EndPage() > 0);       // end page
+//	}
+//	OnEndPrinting(&dc, &Info);                  // Clean up after printing
+//
+//	if (bPrintingOK)
+//		dc.EndDoc();                            // end a print job
+//	else
+//		dc.AbortDoc();                          // abort job.
+//
+//	dc.Detach();                                // detach the printer DC
+//}
+
+
+
+void Bookings::OnLvnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	bool isSelected = pNMLV->uNewState & LVIS_SELECTED ? TRUE : FALSE;
+	GetDlgItem(IDC_REMOVE_RESERVATION)->EnableWindow(isSelected);
+	*pResult = 0;
+}
+
+
+void Bookings::OnBnClickedRemoveReservation()
+{
+	int reservationIndex = bookingList.GetNextItem(-1, LVNI_SELECTED);
+	CString id = bookingList.GetItemText(reservationIndex, 0);
+	Guest guest;
+	guest.m_strFilter.Format(_T("[BookingID] = %d"), _tstoi(id));
+	guest.Open();
+	guest.Delete();
+	bookingList.DeleteItem(reservationIndex);
+	guest.Close();
 }

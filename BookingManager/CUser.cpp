@@ -2,6 +2,7 @@
 //
 
 #include "pch.h"
+#include "BookingManager.h"
 #include "CUser.h"
 
 
@@ -17,7 +18,8 @@ CUser::CUser(CDatabase* pdb)
 	m_Name = L"";
 	m_Surname = L"";
 	m_Mobile = L"";
-	m_nFields = 6;
+	m_Email = L"";
+	m_nFields = 7;
 	m_nDefaultType = dynaset;
 }
 
@@ -43,6 +45,7 @@ void CUser::DoFieldExchange(CFieldExchange* pFX)
 	RFX_Text(pFX, _T("[Name]"), m_Name);
 	RFX_Text(pFX, _T("[Surname]"), m_Surname);
 	RFX_Text(pFX, _T("[Mobile]"), m_Mobile);
+	RFX_Text(pFX, _T("[Email]"), m_Email);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CUser diagnostics

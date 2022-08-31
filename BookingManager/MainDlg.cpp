@@ -6,7 +6,7 @@
 #include "MainDlg.h"
 #include "afxdialogex.h"
 #include "Bookings.h"
-
+#include "UserList.h"
 // MainDlg dialog
 
 IMPLEMENT_DYNAMIC(MainDlg, CDialogEx)
@@ -29,6 +29,7 @@ void MainDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(MainDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &MainDlg::OnBookingClicked)
+	ON_BN_CLICKED(IDC_USERS_BTN, &MainDlg::OnUsersClicked)
 END_MESSAGE_MAP()
 
 
@@ -52,4 +53,11 @@ void MainDlg::OnBookingClicked()
 	Bookings book;
 	book.DoModal();
 	// TODO: Add your control notification handler code here
+}
+
+
+void MainDlg::OnUsersClicked()
+{
+	UserList ul;
+	ul.DoModal();
 }

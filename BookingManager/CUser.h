@@ -15,6 +15,7 @@ public:
 	CString	m_Name;
 	CString	m_Surname;
 	CString	m_Mobile;
+	CString	m_Email;
 
 	// Overrides
 		// Wizard generated virtual function overrides
