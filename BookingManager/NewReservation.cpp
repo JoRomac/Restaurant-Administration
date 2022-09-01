@@ -6,6 +6,7 @@
 #include "NewReservation.h"
 #include "afxdialogex.h"
 #include "Guest.h"
+#include "resource.h"
 
 // NewReservation dialog
 

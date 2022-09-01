@@ -8,6 +8,7 @@
 #include "NewReservation.h"
 #include "Guest.h"
 #include "afxwin.h"
+#include "UpdateReservation.h"
 // Bookings dialog
 
 IMPLEMENT_DYNAMIC(Bookings, CDialogEx)
@@ -39,6 +40,7 @@ BEGIN_MESSAGE_MAP(Bookings, CDialogEx)
 	ON_BN_CLICKED(IDC_PRINT, &Bookings::OnBnClickedPrint)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST1, &Bookings::OnLvnItemchangedList1)
 	ON_BN_CLICKED(IDC_REMOVE_RESERVATION, &Bookings::OnBnClickedRemoveReservation)
+	ON_BN_CLICKED(IDC_UPDATE_BTN, &Bookings::OnBnClickedUpdateBtn)
 END_MESSAGE_MAP()
 
 
@@ -128,8 +130,11 @@ void Bookings::OnDtnDatetimechangeDatetimepicker1(NMHDR* pNMHDR, LRESULT* pResul
 		}
 	}
 	guest.Close();
+
 	*pResult = 0;
 }
+
+
 
 void Bookings::OnPrint(CDC* pDC)//
 {
@@ -236,11 +241,7 @@ void Bookings::Print()
 			//pOldFont = (CFont*)dcPrinter.SelectObject(&fnt);
 			//CPoint pt(dcPrinter.GetDeviceCaps(HORZRES), dcPrinter.GetDeviceCaps(VERTRES));
 			//dcPrinter.DPtoLP(&pt);
-			//CSize const cs = dcPrinter.GetTextExtent(_T("A"));
-			//int row = 0;
-			//row += cs.cy;
-			//row += cs.cy;
-			//row += cs.cy;
+			
 			//dcPrinter.TextOut(50, 50, _T("Hello World!"), 12);
 			OnPrint(&dcPrinter);
             dcPrinter.EndPage();
@@ -304,6 +305,7 @@ void Bookings::OnLvnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult)
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	bool isSelected = pNMLV->uNewState & LVIS_SELECTED ? TRUE : FALSE;
 	GetDlgItem(IDC_REMOVE_RESERVATION)->EnableWindow(isSelected);
+	GetDlgItem(IDC_UPDATE_BTN)->EnableWindow(isSelected);
 	*pResult = 0;
 }
 
@@ -318,4 +320,17 @@ void Bookings::OnBnClickedRemoveReservation()
 	guest.Delete();
 	bookingList.DeleteItem(reservationIndex);
 	guest.Close();
+}
+
+
+void Bookings::OnBnClickedUpdateBtn()
+{
+	int reservationIndex = bookingList.GetNextItem(-1, LVNI_SELECTED);
+	CString id = bookingList.GetItemText(reservationIndex, 0);
+	Guest guest;
+	guest.m_strFilter.Format(_T("[BookingID] = %d"), _tstoi(id));
+	guest.Open();
+	UpdateReservation update(_tstoi(id), guest.m_Time, guest.m_Date, guest.m_Pax, guest.m_Occasion);
+	update.DoModal();
+		//IspisRezervacija();
 }

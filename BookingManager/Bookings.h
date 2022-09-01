@@ -35,4 +35,8 @@ public:
 	void Print();
 	afx_msg void OnLvnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedRemoveReservation();
+	void SortByTime(CListCtrl reservations);
+
+	afx_msg void OnBnClickedUpdateBtn();
+	int bookingId;
 };
