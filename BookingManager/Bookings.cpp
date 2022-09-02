@@ -84,7 +84,10 @@ BOOL Bookings::OnInitDialog()
 void Bookings::OnAddReservationClicked()
 {
 	NewReservation reservation;
-	reservation.DoModal();
+	
+	if (reservation.DoModal() == IDOK) {
+		DisplayReservations(reservation.d.GetDay(), reservation.d.GetMonth(), reservation.d.GetYear());
+	}
 }
 
 

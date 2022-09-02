@@ -7,7 +7,7 @@
 #include "afxdialogex.h"
 #include "Guest.h"
 #include "resource.h"
-
+#include "Bookings.h"
 // NewReservation dialog
 
 IMPLEMENT_DYNAMIC(NewReservation, CDialogEx)
