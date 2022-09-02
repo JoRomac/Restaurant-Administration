@@ -8,7 +8,7 @@ class MainDlg : public CDialogEx
 	DECLARE_DYNAMIC(MainDlg) 
 
 public:
-	MainDlg(const CString name, CWnd* pParent = nullptr);   // standard constructor
+	MainDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~MainDlg();
 
 
@@ -25,4 +25,5 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBookingClicked();
 	afx_msg void OnUsersClicked();
+	afx_msg void OnBnClickedSignout();
 };

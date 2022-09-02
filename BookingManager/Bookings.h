@@ -22,21 +22,25 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CListCtrl bookingList;
-	virtual void OnPrint(CDC* pDC);//
+	virtual void OnPrint(CDC* pDC);
 	afx_msg void OnAddReservationClicked();
-
 	afx_msg void OnDisplayAllClicked();
-//	COleDateTime m_displayByMonth;
-//	afx_msg void OnMcnSelchangeDisplayByMonth(NMHDR* pNMHDR, LRESULT* pResult);
-//	CMonthCalCtrl m_getResrvationsByDate;
 	CDateTimeCtrl m_GetReservationsByDate;
 	afx_msg void OnDtnDatetimechangeDatetimepicker1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedPrint();
 	void Print();
 	afx_msg void OnLvnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedRemoveReservation();
-	void SortByTime(CListCtrl reservations);
-
 	afx_msg void OnBnClickedUpdateBtn();
 	int bookingId;
+	CString bookingDate;
+	void DisplayReservations(int d, int m, int y);
+
+	bool SortByColumn(int columnIndex, bool order);
+	bool order;
+	int column;
+	afx_msg void OnLvnColumnclickList1(NMHDR* pNMHDR, LRESULT* pResult);
+
+	int totalGuestNum;
+	CString totalGuests;
 };

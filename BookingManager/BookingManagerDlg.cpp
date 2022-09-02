@@ -95,24 +95,19 @@ HCURSOR CBookingManagerDlg::OnQueryDragIcon()
 }
 
 
-
-
-
 void CBookingManagerDlg::OnLoginClicked()
 {
 	UpdateData(TRUE);
 	CUser userLogin;
-	CString s;
 	userLogin.m_strFilter.Format(_T("[Username] = '%s' AND [Password] = '%s'"), m_User, m_Password);
 	userLogin.Open();
 	if (!userLogin.IsEOF()) {
-		MainDlg App(m_User, this);
 		CDialogEx::OnOK();
-		App.DoModal();
+		MainDlg main;
+		main.DoModal();
 	}
 	else {
-		s.LoadString(IDS_USER_UNKNOWN);
-		AfxMessageBox(s);
+		AfxMessageBox(_T("Incorrect login details"));
 	}
 	userLogin.Close();
 

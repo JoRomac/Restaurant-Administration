@@ -10,7 +10,6 @@
 #define IDD_NEW_RESERVATION             135
 #define IDD_USER_DIALOG                 137
 #define IDD_ADD_USER                    139
-#define IDD_DIALOG1                     141
 #define IDD_UPDATE_RES_DLG              141
 #define IDC_USER                        1000
 #define IDC_PASSWORD                    1001
@@ -45,6 +44,8 @@
 #define IDC_UP_DATE                     1048
 #define IDC_UP_OCCASION                 1050
 #define IDC_UPDATE_BTN                  1051
+#define IDC_STATIC_BOOKINGDATE          1052
+#define IDC_STATIC_NUMOFGUESTS          1053
 
 // Next default values for new objects
 // 
@@ -52,7 +53,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        143
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1052
+#define _APS_NEXT_CONTROL_VALUE         1054
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

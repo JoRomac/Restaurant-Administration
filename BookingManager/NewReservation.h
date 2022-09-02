@@ -33,4 +33,5 @@ public:
 	afx_msg void OnAddCliked();
 	CTime t, d;
 
+	afx_msg void OnDtnDatetimechangeDate(NMHDR* pNMHDR, LRESULT* pResult);
 };

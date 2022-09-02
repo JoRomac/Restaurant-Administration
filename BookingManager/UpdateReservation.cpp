@@ -11,7 +11,7 @@
 
 IMPLEMENT_DYNAMIC(UpdateReservation, CDialogEx)
 
-UpdateReservation::UpdateReservation(int bookingId,CTime t, CTime d, CString pax, CString occasion, CWnd* pParent /*=nullptr*/)
+UpdateReservation::UpdateReservation(int bookingId, CTime t, CTime d, CString pax, CString occasion, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_UPDATE_RES_DLG, pParent)
 	,bookingId(bookingId)
 	, pax(pax)
@@ -28,13 +28,10 @@ UpdateReservation::~UpdateReservation()
 BOOL UpdateReservation::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-
-	//SetDlgItemText(IDC_EDIT_UP_PAX, pax);
-	SetDlgItemText(IDC_UP_OCCASION, pax);
+	SetDlgItemText(IDC_EDIT_UP_PAX, pax);
 	VERIFY(m_Time.SetTime(&time));
 	VERIFY(m_Date.SetTime(&date));
 	SetDlgItemText(IDC_UP_OCCASION, occasion);
-	//UpdateData(TRUE);
 	GetDlgItem(IDOK)->EnableWindow(FALSE);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -82,9 +79,6 @@ void UpdateReservation::OnBnClickedUpdate()
 }
 
 
-
-
-
 void UpdateReservation::OnEnChangeEditUpPax()
 {
 	GetDlgItem(IDOK)->EnableWindow(TRUE);
@@ -94,7 +88,17 @@ void UpdateReservation::OnEnChangeEditUpPax()
 void UpdateReservation::OnDtnDatetimechangeUpDate(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
-	GetDlgItem(IDOK)->EnableWindow(TRUE);
+	SYSTEMTIME st;
+	GetSystemTime(&st);
+	CTime t = pDTChange->st;
+	if (t.GetDay() - st.wDay < 0 || t.GetMonth() - st.wMonth < 0 || t.GetYear() - st.wYear < 0) {
+		AfxMessageBox(_T("Invalid date"));
+		VERIFY(m_Date.SetTime(&st));
+	}
+	else {
+		GetDlgItem(IDOK)->EnableWindow(TRUE);
+	}
+	
 	*pResult = 0;
 }
 

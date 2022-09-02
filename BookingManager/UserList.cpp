@@ -74,18 +74,6 @@ void UserList::DisplayUsers()
 	user.Close();
 }
 
-//void CZaposlenici::OnBnClickedButtonZaposlenikIzbrisi()
-//{
-//
-//	int x = zaposlenici.GetNextItem(-1, LVNI_SELECTED);
-//	CString t = zaposlenici.GetItemText(x, 0);
-//	CZaposlenik zaposlenik;
-//	zaposlenik.m_strFilter.Format(_T("[ZaposlenikID] = %d"), _tstoi(t));
-//	zaposlenik.Open();
-//	zaposlenik.Delete();
-//	zaposlenici.DeleteItem(x);
-//	zaposlenik.Close();
-//}
 
 void UserList::OnLvnItemchangedUserList(NMHDR* pNMHDR, LRESULT* pResult)
 {

@@ -42,19 +42,11 @@ void NewReservation::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(NewReservation, CDialogEx)
 	ON_BN_CLICKED(IDOK, &NewReservation::OnAddCliked)
+	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATE, &NewReservation::OnDtnDatetimechangeDate)
 END_MESSAGE_MAP()
 
 
 // NewReservation message handlers
-CTime Datum(CString datum) {
-	COleDateTime t1;
-	CTime d1;
-	SYSTEMTIME st;
-	t1.ParseDateTime(datum);
-	if (t1.GetAsSystemTime(st))
-		d1 = CTime(st);
-	return d1;
-}
 
 void NewReservation::OnAddCliked()
 {
@@ -76,4 +68,18 @@ void NewReservation::OnAddCliked()
 	}
 	guest.Close();
 	CDialogEx::OnOK();
+}
+
+
+void NewReservation::OnDtnDatetimechangeDate(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
+	SYSTEMTIME st;
+	GetSystemTime(&st);
+	CTime t = pDTChange->st;
+	if (t.GetDay() - st.wDay < 0 || t.GetMonth() - st.wMonth < 0 || t.GetYear() - st.wYear < 0) {
+		AfxMessageBox(_T("Invalid date"));
+		VERIFY(m_Date.SetTime(&st));
+	}
+	*pResult = 0;
 }
