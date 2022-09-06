@@ -11,7 +11,6 @@ namespace sortbytime {
 		bool m_time;
 	};
 	int CALLBACK Sort(LPARAM lParam1, LPARAM lParam2, LPARAM lSortParam);
-	CTime Time(CString datum);
 };
 
 

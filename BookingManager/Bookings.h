@@ -22,7 +22,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CListCtrl bookingList;
-	virtual void OnPrint(CDC* pDC);
+	virtual void OnPrint(CDC* pDC, CPrintInfo* info);
 	afx_msg void OnAddReservationClicked();
 	afx_msg void OnDisplayAllClicked();
 	CDateTimeCtrl m_GetReservationsByDate;

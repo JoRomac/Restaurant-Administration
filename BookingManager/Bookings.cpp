@@ -174,9 +174,8 @@ bool Bookings::SortByColumn(int columnIndex, bool order)
 }
 
 
-void Bookings::OnPrint(CDC* pDC)
+void Bookings::OnPrint(CDC* pDC, CPrintInfo* info)
 {
-
 	int const a4size = 21;
 	int paper_width = pDC->GetDeviceCaps(HORZRES);
 	int paper_heigth = pDC->GetDeviceCaps(VERTRES);
@@ -216,6 +215,7 @@ void Bookings::Print()
    CPrintDialog dlg(FALSE);
    dlg.GetDefaults();
 
+
    // is a default printer set up?
    HDC hdcPrinter = dlg.GetPrinterDC();
    if (hdcPrinter == NULL)
@@ -234,9 +234,7 @@ void Bookings::Print()
       docinfo.cbSize = sizeof(docinfo);
       docinfo.lpszDocName = _T("CDC::StartDoc() Code Fragment");
 
-	  
-	  //CPrintInfo Info;
-	  //Info.m_rectDraw.SetRect(0, 0, dcPrinter.GetDeviceCaps(HORZRES), dcPrinter.GetDeviceCaps(VERTRES));
+	  CPrintInfo Info;
 
       if (dcPrinter.StartDoc(&docinfo) < 0)
       {
@@ -244,36 +242,37 @@ void Bookings::Print()
       }
       else
       {
-         // start a page
-         if (dcPrinter.StartPage() < 0)
-         {
-            MessageBox(_T("Could not start page"));
-            dcPrinter.AbortDoc();
-         }
-         else
-         {
-            // actually do some printing
-			 dcPrinter.SetMapMode(MM_TEXT);
-			
-			 CFont font;
-			 LOGFONT lf;
-			 memset(&lf, 0, sizeof(LOGFONT)); // zero out structure
-			 lf.lfHeight = 12;                // request a 12-pixel-height font
-			 _tcsncpy_s(lf.lfFaceName, LF_FACESIZE,
-				 _T("Arial"), 7);           // request a face name "Arial"
-			 VERIFY(font.CreateFontIndirect(&lf)); // create the font
+		  
+			// start a page
+			if (dcPrinter.StartPage() < 0)
+			{
+				MessageBox(_T("Could not start page"));
+				dcPrinter.AbortDoc();
+			}
+			else
+			{
+			// actually do some printing
+			dcPrinter.SetMapMode(MM_TEXT);
 
-			 // Do something with the font just created...
-			 
-			 CFont* def_font = dcPrinter.SelectObject(&font);
-			 dcPrinter.TextOut(5, 5, _T("Hello"), 5);
-			 dcPrinter.SelectObject(def_font);
-			
-			OnPrint(&dcPrinter);
-            dcPrinter.EndPage();
-            dcPrinter.EndDoc();
-            dcPrinter.SelectObject(def_font);
-         }
+			CFont font;
+			LOGFONT lf;
+			memset(&lf, 0, sizeof(LOGFONT)); // zero out structure
+			lf.lfHeight = 12;                // request a 12-pixel-height font
+			_tcsncpy_s(lf.lfFaceName, LF_FACESIZE,
+				_T("Arial"), 7);           // request a face name "Arial"
+			VERIFY(font.CreateFontIndirect(&lf)); // create the font
+
+			// Do something with the font just created...
+
+			CFont* def_font = dcPrinter.SelectObject(&font);
+			dcPrinter.TextOut(5, 5, _T("Hello"), 5);
+			dcPrinter.SelectObject(def_font);
+
+			OnPrint(&dcPrinter, &Info);
+			dcPrinter.EndPage();
+			dcPrinter.EndDoc();
+			}
+		  
       }
    }
 }
