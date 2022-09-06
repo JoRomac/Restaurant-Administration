@@ -60,6 +60,9 @@
     <ClInclude Include="UpdateReservation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SortColumns.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BookingManager.cpp">
@@ -95,6 +98,9 @@
     <ClCompile Include="UpdateReservation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SortColumns.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BookingManager.rc">
@@ -104,6 +110,9 @@
   <ItemGroup>
     <None Include="res\BookingManager.rc2">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\Vsite\6 semestar\nwp\Seminar\RestaurantAdministrationDB.mdb">
+      <Filter>DBsource</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
