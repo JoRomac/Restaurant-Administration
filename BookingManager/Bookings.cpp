@@ -110,12 +110,14 @@ void Bookings::OnDtnDatetimechangeDatetimepicker1(NMHDR* pNMHDR, LRESULT* pResul
 
 void Bookings::DisplayReservations(int d, int m, int y) {
 	Guest guest;
+	CString id;
 	bookingList.DeleteAllItems();
 	totalGuestNum = 0;
 	guest.Open();
 	while (!guest.IsEOF()) {
 		if (guest.m_Date.GetDay() - d == 0 && guest.m_Date.GetMonth() - m == 0 && guest.m_Date.GetYear() - y == 0) {
 			int elementAtIndex = bookingList.InsertItem(0, guest.m_Name);
+			bookingList.SetItemData(elementAtIndex, guest.m_Id);
 			bookingList.SetItemText(elementAtIndex, 1, guest.m_Surname);
 			bookingList.SetItemText(elementAtIndex, 2, guest.m_Pax);
 			bookingList.SetItemText(elementAtIndex, 3, guest.m_Time.Format(_T("%H:%M")));
@@ -260,9 +262,9 @@ void Bookings::OnLvnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult)
 void Bookings::OnBnClickedRemoveReservation()
 {
 	int reservationIndex = bookingList.GetNextItem(-1, LVNI_SELECTED);
-	CString id = bookingList.GetItemText(reservationIndex, 0);
+	int id = bookingList.GetItemData(reservationIndex);
 	Guest guest;
-	guest.m_strFilter.Format(_T("[BookingID] = %d"), _tstoi(id));
+	guest.m_strFilter.Format(_T("[BookingID] = %d"), id);
 	guest.Open();
 	guest.Delete();
 	bookingList.DeleteItem(reservationIndex);
@@ -273,11 +275,11 @@ void Bookings::OnBnClickedRemoveReservation()
 void Bookings::OnBnClickedUpdateBtn()
 {
 	int reservationIndex = bookingList.GetNextItem(-1, LVNI_SELECTED);
-	CString id = bookingList.GetItemText(reservationIndex, 0);
+	int id = bookingList.GetItemData(reservationIndex);
 	Guest guest;
-	guest.m_strFilter.Format(_T("[BookingID] = %d"), _tstoi(id));
+	guest.m_strFilter.Format(_T("[BookingID] = %d"), id);
 	guest.Open();
-	UpdateReservation update(_tstoi(id), guest.m_Time, guest.m_Date, guest.m_Pax, guest.m_Occasion);
+	UpdateReservation update(id, guest.m_Time, guest.m_Date, guest.m_Pax, guest.m_Occasion);
 	if(update.DoModal() == IDOK)
 		DisplayReservations(guest.m_Date.GetDay(), guest.m_Date.GetMonth(), guest.m_Date.GetYear());
 }
