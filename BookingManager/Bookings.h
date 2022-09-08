@@ -24,7 +24,6 @@ public:
 	CListCtrl bookingList;
 	virtual void OnPrint(CDC* pDC, CPrintInfo* info);
 	afx_msg void OnAddReservationClicked();
-	afx_msg void OnDisplayAllClicked();
 	CDateTimeCtrl m_GetReservationsByDate;
 	afx_msg void OnDtnDatetimechangeDatetimepicker1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedPrint();

@@ -13,12 +13,12 @@ IMPLEMENT_DYNAMIC(NewUser, CDialogEx)
 
 NewUser::NewUser(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_ADD_USER, pParent)
-	, m_Password(_T(""))
-	, m_Name(_T(""))
-	, m_Lastname(_T(""))
-	, m_Mobile(_T(""))
-	, m_Email(_T(""))
-	, m_Username(_T(""))
+	, m_Password()
+	, m_Name()
+	, m_Lastname()
+	, m_Mobile()
+	, m_Email()
+	, m_Username()
 {
 
 }
@@ -64,4 +64,15 @@ void NewUser::OnBnClickedOk()
 	}
 	user.Close();
 	CDialogEx::OnOK();
+}
+
+
+BOOL NewUser::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+
+	GetDlgItem(IDC_EDIT_USERNAME)->SetFocus();
+
+	return FALSE;  // return TRUE unless you set the focus to a control
+				  // EXCEPTION: OCX Property Pages should return FALSE
 }

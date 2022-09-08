@@ -17,8 +17,8 @@ IMPLEMENT_DYNAMIC(Bookings, CDialogEx)
 
 Bookings::Bookings(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_BOOKING_DIALOG, pParent)
-	, bookingDate(_T(""))
-	, totalGuests(_T(""))
+	, bookingDate()
+	, totalGuests()
 {
 
 }
@@ -39,7 +39,6 @@ void Bookings::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(Bookings, CDialogEx)
 	ON_BN_CLICKED(IDC_ADD_RESERVATION, &Bookings::OnAddReservationClicked)
-	ON_BN_CLICKED(IDC_DISPLAY_ALL, &Bookings::OnDisplayAllClicked)
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATETIMEPICKER1, &Bookings::OnDtnDatetimechangeDatetimepicker1)
 	ON_BN_CLICKED(IDC_PRINT, &Bookings::OnBnClickedPrint)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST1, &Bookings::OnLvnItemchangedList1)
@@ -52,22 +51,19 @@ END_MESSAGE_MAP()
 // Bookings message handlers
 
 
-
-
 BOOL Bookings::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	// TODO:  Add extra initialization here
-	bookingList.InsertColumn(0, _T("Id"), LVCFMT_LEFT, 30);
-	bookingList.InsertColumn(1, _T("Name"), LVCFMT_LEFT, 130);
-	bookingList.InsertColumn(2, _T("Surname"), LVCFMT_LEFT, 170);
-	bookingList.InsertColumn(3, _T("Pax"), LVCFMT_LEFT, 50);
-	bookingList.InsertColumn(4, _T("Time"), LVCFMT_LEFT, 100);
-	bookingList.InsertColumn(5, _T("Date"), LVCFMT_LEFT, 100);
-	bookingList.InsertColumn(6, _T("Occasion"), LVCFMT_LEFT, 120);
-	bookingList.InsertColumn(7, _T("Contact"), LVCFMT_LEFT, 120);
+	bookingList.InsertColumn(0, _T("Name"), LVCFMT_LEFT, 130);
+	bookingList.InsertColumn(1, _T("Surname"), LVCFMT_LEFT, 170);
+	bookingList.InsertColumn(2, _T("Pax"), LVCFMT_LEFT, 50);
+	bookingList.InsertColumn(3, _T("Time"), LVCFMT_LEFT, 100);
+	bookingList.InsertColumn(4, _T("Date"), LVCFMT_LEFT, 100);
+	bookingList.InsertColumn(5, _T("Occasion"), LVCFMT_LEFT, 120);
+	bookingList.InsertColumn(6, _T("Contact"), LVCFMT_LEFT, 150);
 	bookingList.SetExtendedStyle(bookingList.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+	bookingList.ModifyStyle(NULL, LVS_SINGLESEL, 0);
 	SYSTEMTIME st;
 	GetSystemTime(&st);
 	int day = st.wDay;
@@ -88,30 +84,6 @@ void Bookings::OnAddReservationClicked()
 	if (reservation.DoModal() == IDOK) {
 		DisplayReservations(reservation.d.GetDay(), reservation.d.GetMonth(), reservation.d.GetYear());
 	}
-}
-
-
-
-void Bookings::OnDisplayAllClicked()
-{
-	//Nema smisla u stvarnoj upotrebi ali za potrebe testiranja je dobro
-	Guest guest;
-	bookingList.DeleteAllItems();
-	guest.Open();
-	while (!guest.IsEOF()) {
-		CString id;
-		id.Format(_T("%ld"), guest.m_Id);
-		int elementAtIndex = bookingList.InsertItem(0, id);
-		bookingList.SetItemText(elementAtIndex, 1, guest.m_Name);
-		bookingList.SetItemText(elementAtIndex, 2, guest.m_Surname);
-		bookingList.SetItemText(elementAtIndex, 3, guest.m_Pax);
-		bookingList.SetItemText(elementAtIndex, 4, guest.m_Time.Format(_T("%H:%M")));//"%H:%M:%S"
-		bookingList.SetItemText(elementAtIndex, 5, guest.m_Date.Format(_T("%d.%m.%Y")));//"%m:%d:%Y"
-		bookingList.SetItemText(elementAtIndex, 6, guest.m_Occasion);
-		bookingList.SetItemText(elementAtIndex, 7, guest.m_Contact);
-		guest.MoveNext();
-	}
-	guest.Close();
 }
 
 
@@ -143,16 +115,13 @@ void Bookings::DisplayReservations(int d, int m, int y) {
 	guest.Open();
 	while (!guest.IsEOF()) {
 		if (guest.m_Date.GetDay() - d == 0 && guest.m_Date.GetMonth() - m == 0 && guest.m_Date.GetYear() - y == 0) {
-			CString id;
-			id.Format(_T("%ld"), guest.m_Id);
-			int elementAtIndex = bookingList.InsertItem(0, id);
-			bookingList.SetItemText(elementAtIndex, 1, guest.m_Name);
-			bookingList.SetItemText(elementAtIndex, 2, guest.m_Surname);
-			bookingList.SetItemText(elementAtIndex, 3, guest.m_Pax);
-			bookingList.SetItemText(elementAtIndex, 4, guest.m_Time.Format(_T("%H:%M")));//"%H:%M:%S"
-			bookingList.SetItemText(elementAtIndex, 5, guest.m_Date.Format(_T("%d.%m.%Y")));//"%m:%d:%Y"
-			bookingList.SetItemText(elementAtIndex, 6, guest.m_Occasion);
-			bookingList.SetItemText(elementAtIndex, 7, guest.m_Contact);
+			int elementAtIndex = bookingList.InsertItem(0, guest.m_Name);
+			bookingList.SetItemText(elementAtIndex, 1, guest.m_Surname);
+			bookingList.SetItemText(elementAtIndex, 2, guest.m_Pax);
+			bookingList.SetItemText(elementAtIndex, 3, guest.m_Time.Format(_T("%H:%M")));
+			bookingList.SetItemText(elementAtIndex, 4, guest.m_Date.Format(_T("%d.%m.%Y")));
+			bookingList.SetItemText(elementAtIndex, 5, guest.m_Occasion);
+			bookingList.SetItemText(elementAtIndex, 6, guest.m_Contact);
 			totalGuestNum += _tstoi(guest.m_Pax);
 			guest.MoveNext();
 		}
@@ -197,11 +166,11 @@ void Bookings::OnPrint(CDC* pDC, CPrintInfo* info)
 
 	for (int r = 0; r <= bookingList.GetItemCount(); ++r) {
 		row += cs.cy;
-		pDC->TextOut(start_point * 1, row, bookingList.GetItemText(r,1));
-		pDC->TextOut(start_point * 5, row, bookingList.GetItemText(r,2));
-		pDC->TextOut(start_point * 9, row, bookingList.GetItemText(r,3));
-		pDC->TextOut(start_point * 13, row, bookingList.GetItemText(r,4));
-		pDC->TextOut(start_point * 17, row, bookingList.GetItemText(r,6));
+		pDC->TextOut(start_point * 1, row, bookingList.GetItemText(r,0));
+		pDC->TextOut(start_point * 5, row, bookingList.GetItemText(r,1));
+		pDC->TextOut(start_point * 9, row, bookingList.GetItemText(r,2));
+		pDC->TextOut(start_point * 13, row, bookingList.GetItemText(r,3));
+		pDC->TextOut(start_point * 17, row, bookingList.GetItemText(r,4));
 	}
 }
 
@@ -242,7 +211,6 @@ void Bookings::Print()
       }
       else
       {
-		  
 			// start a page
 			if (dcPrinter.StartPage() < 0)
 			{

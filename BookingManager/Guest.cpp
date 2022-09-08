@@ -13,13 +13,11 @@ Guest::Guest(CDatabase* pdb)
 	: CRecordset(pdb)
 {	
 	m_Id = 0;
-	m_Name = L"";
-	m_Surname = L"";
-	m_Pax = L"";
-	m_Time;
-	m_Date;
-	m_Occasion = L"";
-	m_Contact = L"";
+	m_Name;
+	m_Surname;
+	m_Pax;
+	m_Occasion;
+	m_Contact;
 	m_nFields = 8;
 	m_nDefaultType = dynaset;
 }

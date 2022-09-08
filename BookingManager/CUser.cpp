@@ -13,12 +13,12 @@ CUser::CUser(CDatabase* pdb)
 	: CRecordset(pdb)
 {
 	m_EmployeeID = 0;
-	m_Username = L"";
-	m_Password = L"";
-	m_Name = L"";
-	m_Surname = L"";
-	m_Mobile = L"";
-	m_Email = L"";
+	m_Username;
+	m_Password;
+	m_Name;
+	m_Surname;
+	m_Mobile;
+	m_Email;
 	m_nFields = 7;
 	m_nDefaultType = dynaset;
 }

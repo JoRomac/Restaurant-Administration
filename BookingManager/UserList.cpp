@@ -100,5 +100,7 @@ void UserList::OnRemoveUserClicked()
 void UserList::OnAddUserCliked()
 {
 	NewUser newUser;
-	newUser.DoModal();
+	if (newUser.DoModal() == IDOK) {
+		DisplayUsers();
+	}
 }

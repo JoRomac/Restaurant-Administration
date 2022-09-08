@@ -33,7 +33,6 @@ BOOL UpdateReservation::OnInitDialog()
 	VERIFY(m_Date.SetTime(&date));
 	SetDlgItemText(IDC_UP_OCCASION, occasion);
 	GetDlgItem(IDOK)->EnableWindow(FALSE);
-
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // EXCEPTION: OCX Property Pages should return FALSE
 }

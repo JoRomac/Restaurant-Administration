@@ -34,4 +34,5 @@ public:
 	CTime t, d;
 
 	afx_msg void OnDtnDatetimechangeDate(NMHDR* pNMHDR, LRESULT* pResult);
+	virtual BOOL OnInitDialog();
 };

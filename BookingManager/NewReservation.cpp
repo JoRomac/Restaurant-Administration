@@ -14,11 +14,11 @@ IMPLEMENT_DYNAMIC(NewReservation, CDialogEx)
 
 NewReservation::NewReservation(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_NEW_RESERVATION, pParent)
-	, m_Name(_T(""))
-	, m_LastName(_T(""))
-	, m_Pax(_T(""))
-	, m_Occasion(_T(""))
-	, m_Contact(_T(""))
+	, m_Name()
+	, m_LastName()
+	, m_Pax()
+	, m_Occasion()
+	, m_Contact()
 {
 
 }
@@ -82,4 +82,15 @@ void NewReservation::OnDtnDatetimechangeDate(NMHDR* pNMHDR, LRESULT* pResult)
 		VERIFY(m_Date.SetTime(&st));
 	}
 	*pResult = 0;
+}
+
+
+BOOL NewReservation::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+
+	GetDlgItem(IDC_NAME)->SetFocus();
+
+	return FALSE;  // return TRUE unless you set the focus to a control
+				  // EXCEPTION: OCX Property Pages should return FALSE
 }
