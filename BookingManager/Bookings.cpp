@@ -218,23 +218,6 @@ void Bookings::Print()
 			}
 			else
 			{
-			// actually do some printing
-			dcPrinter.SetMapMode(MM_TEXT);
-
-			CFont font;
-			LOGFONT lf;
-			memset(&lf, 0, sizeof(LOGFONT)); // zero out structure
-			lf.lfHeight = 12;                // request a 12-pixel-height font
-			_tcsncpy_s(lf.lfFaceName, LF_FACESIZE,
-				_T("Arial"), 7);           // request a face name "Arial"
-			VERIFY(font.CreateFontIndirect(&lf)); // create the font
-
-			// Do something with the font just created...
-
-			CFont* def_font = dcPrinter.SelectObject(&font);
-			//dcPrinter.TextOut(5, 5, _T("Hello"), 5);
-			dcPrinter.SelectObject(def_font);
-
 			OnPrint(&dcPrinter, &Info);
 			dcPrinter.EndPage();
 			dcPrinter.EndDoc();

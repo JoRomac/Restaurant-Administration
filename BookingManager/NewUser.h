@@ -21,7 +21,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-//	CEdit m_Username;
 	CString m_Password;
 	CString m_Name;
 	CString m_Lastname;

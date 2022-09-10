@@ -23,8 +23,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CString m_Pax;
-//	COleDateTime m_Date;
-//	COleDateTime m_Time;
 	CString m_Occasion;
 	afx_msg void OnBnClickedUpdate();
 	CDateTimeCtrl m_Date;
