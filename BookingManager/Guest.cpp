@@ -12,12 +12,6 @@ IMPLEMENT_DYNAMIC(Guest, CRecordset)
 Guest::Guest(CDatabase* pdb)
 	: CRecordset(pdb)
 {	
-	m_Id = 0;
-	m_Name;
-	m_Surname;
-	m_Pax;
-	m_Occasion;
-	m_Contact;
 	m_nFields = 8;
 	m_nDefaultType = dynaset;
 }

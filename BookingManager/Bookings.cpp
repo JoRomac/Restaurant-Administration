@@ -125,11 +125,8 @@ void Bookings::DisplayReservations(int d, int m, int y) {
 			bookingList.SetItemText(elementAtIndex, 5, guest.m_Occasion);
 			bookingList.SetItemText(elementAtIndex, 6, guest.m_Contact);
 			totalGuestNum += _tstoi(guest.m_Pax);
-			guest.MoveNext();
 		}
-		else {
-			guest.MoveNext();
-		}
+		guest.MoveNext();
 	}
 	guest.Close();
 	totalGuests.Format(_T("%d"), totalGuestNum);
@@ -138,7 +135,7 @@ void Bookings::DisplayReservations(int d, int m, int y) {
 }
 bool Bookings::SortByColumn(int columnIndex, bool order)
 {
-	bool time = columnIndex == 4 ? false : true;
+	bool time = columnIndex == 3 ? false : true;
 	sortbytime::SORTPARAM sortparam(bookingList, columnIndex, order, time);
 	ListView_SortItemsEx(bookingList, sortbytime::Sort, &sortparam);
 	return true;
@@ -154,7 +151,7 @@ void Bookings::OnPrint(CDC* pDC, CPrintInfo* info)
 
 	CSize cs = pDC->GetTextExtent(_T("A"));
 	int row = 0;
-	pDC->TextOut(start_point, row, bookingList.GetItemText(0, 5) + _T(" RESERVATIONS:"));
+	pDC->TextOut(start_point, row, bookingList.GetItemText(0, 4) + _T(" RESERVATIONS:"));
 	row += cs.cy*1.5;
 	pDC->TextOut(start_point * 1, row, _T("Name"));
 	pDC->TextOut(start_point * 5, row, _T("Surname"));
@@ -172,7 +169,7 @@ void Bookings::OnPrint(CDC* pDC, CPrintInfo* info)
 		pDC->TextOut(start_point * 5, row, bookingList.GetItemText(r,1));
 		pDC->TextOut(start_point * 9, row, bookingList.GetItemText(r,2));
 		pDC->TextOut(start_point * 13, row, bookingList.GetItemText(r,3));
-		pDC->TextOut(start_point * 17, row, bookingList.GetItemText(r,4));
+		pDC->TextOut(start_point * 17, row, bookingList.GetItemText(r,5));
 	}
 }
 
@@ -235,7 +232,7 @@ void Bookings::Print()
 			// Do something with the font just created...
 
 			CFont* def_font = dcPrinter.SelectObject(&font);
-			dcPrinter.TextOut(5, 5, _T("Hello"), 5);
+			//dcPrinter.TextOut(5, 5, _T("Hello"), 5);
 			dcPrinter.SelectObject(def_font);
 
 			OnPrint(&dcPrinter, &Info);

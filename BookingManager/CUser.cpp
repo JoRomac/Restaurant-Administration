@@ -12,13 +12,6 @@ IMPLEMENT_DYNAMIC(CUser, CRecordset)
 CUser::CUser(CDatabase* pdb)
 	: CRecordset(pdb)
 {
-	m_EmployeeID = 0;
-	m_Username;
-	m_Password;
-	m_Name;
-	m_Surname;
-	m_Mobile;
-	m_Email;
 	m_nFields = 7;
 	m_nDefaultType = dynaset;
 }
